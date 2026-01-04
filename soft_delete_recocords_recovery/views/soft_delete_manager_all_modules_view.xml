@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="soft_delete_menu_root" name="Soft Delete" sequence="5"/>
+
+    <!-- Tree View -->
+    <record id="view_soft_delete_manager_all_modules_tree" model="ir.ui.view">
+        <field name="name">soft.delete.manager.all.modules.tree</field>
+        <field name="model">soft.delete.manager.all.modules</field>
+        <field name="arch" type="xml">
+            <tree string="Soft Delete Manager All Modules" create="false" edit="false">
+                <field name="model_id" invisible="1"/>
+                <field name="model_display_name"/>
+                <field name="model_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_soft_delete_manager_all_modules_kanban" model="ir.ui.view">
+        <field name="name">soft.delete.manager.all.modules.kanban</field>
+        <field name="model">soft.delete.manager.all.modules</field>
+        <field name="arch" type="xml">
+            <kanban string="Soft Delete Manager All Modules" create="false" edit="false">
+                <field name="model_id"/>
+                <field name="model_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="model_display_name" display_field="model_display_name"/>
+                                </strong>
+                                <br/>
+                                <span>Records: <field name="model_count"/>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_soft_delete_manager_all_modules_pivot" model="ir.ui.view">
+        <field name="name">soft.delete.manager.all.modules.pivot</field>
+        <field name="model">soft.delete.manager.all.modules</field>
+        <field name="arch" type="xml">
+            <pivot string="Soft Delete Manager All Modules">
+                <field name="model_id" type="row"/>
+                <field name="record_count_for_pivot" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_soft_delete_manager_all_modules" model="ir.actions.act_window">
+        <field name="name">Soft Delete Manager All Modules</field>
+        <field name="res_model">soft.delete.manager.all.modules</field>
+        <field name="view_mode">tree,kanban,pivot</field>
+        <field name="view_id" ref="view_soft_delete_manager_all_modules_tree"/>
+        <field name="domain">[('model_count', '>', 0)]</field>
+        <!-- <field name="domain">[]</field> -->
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="soft_delete_manager_all_modules_menu" name="Soft Delete Manager All Modules" parent="soft_delete_menu_root" action="action_soft_delete_manager_all_modules" sequence="10"/>
+</odoo>

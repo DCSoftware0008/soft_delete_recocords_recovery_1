@@ -1,0 +1,63 @@
+<odoo>
+    <record id="view_soft_delete_manager_config_settings_form" model="ir.ui.view">
+        <field name="name">soft.delete.manager.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='settings']" position="inside">
+                <div class="app_settings_block" data-string="Soft Delete Manager" string="Soft Delete Manager" data-key="soft_delete_manager">
+                    <h2>Soft Delete Configuration</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="config_id" invisible="1"/>
+                                <label for="model_ids" string="Model Name" class="col-lg-3 o_light_label"/>
+                                <field name="model_ids" widget="many2many_tags" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
+                                <div class="text-muted">
+                                    Select the models for which soft delete functionality should be enabled.
+                                <field name="config_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <button name="action_cleanup_soft_delete" string="Clean Up Soft Delete Data" type="object" class="btn btn-primary" confirm="Are you sure you want to delete all models, views, and server actions starting with 'x_'? This action cannot be undone." groups="base.group_system"/>
+                                <div class="text-muted">
+                                    Permanently delete all soft delete wizard models, views, and server actions starting with 'x_'. Restricted to superuser only.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="config_id" invisible="1"/>
+                                <label for="select_all_permanent_delete" readonly="1" string="Select All for Permanent Delete" class="col-lg-3 o_light_label"/>
+                                <field name="select_all_permanent_delete" readonly="1"/>
+                                <div class="text-muted">
+                                    Enable to select all records for permanent deletion.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="config_id" invisible="1"/>
+                                <label for="specific_models_recover" string="Recover Specific Models" class="col-lg-3 o_light_label"/>
+                                <field name="specific_models_recover" widget="many2many_tags" domain="[('id', 'in', model_ids)]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
+                                <div class="text-muted">
+                                    Select specific models to allow recovery of their records.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_soft_delete_manager_config_settings" model="ir.actions.act_window">
+        <field name="name">Soft Delete Manager</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_soft_delete_manager_config_settings_form"/>
+        <field name="target">inline</field>
+    </record>
+</odoo>

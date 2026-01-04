@@ -1,0 +1,11 @@
+<templates xml:space="preserve">
+    <t t-name="soft_delete_manager.KanbanViewButtons" owl="1">
+        <button
+            type="button"
+            class="btn btn-outline-danger ms-2"
+            t-on-click="onRecoverClick"
+        >
+            Recover Deleted
+        </button>
+    </t>
+</templates>

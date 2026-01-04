@@ -11,7 +11,7 @@
         For more details, see the README file.
     ''',
     'category': 'Tools',
-    'author': 'Daksh',
+    'author': 'DC Software',
     'website': 'https://github.com',
     'license': 'OPL-1',
     'depends': ['base', 'web'],
@@ -47,4 +47,5 @@
     'auto_install': False,
     'uninstall_hook': 'uninstall_hook',
 }
+
 

@@ -13,7 +13,7 @@
     'category': 'Tools',
     'author': 'DC Software',
     'website': 'https://github.com',
-    'license': 'OPL-1',
+    'license': 'LGPL-3',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
@@ -47,5 +47,6 @@
     'auto_install': False,
     'uninstall_hook': 'uninstall_hook',
 }
+
 
 

@@ -14,7 +14,7 @@
     'author': 'Daksh',
     'website': 'https://github.com',
     'license': 'OPL-1',
-    'depends': ['base', 'web', 'logiintra_base'],
+    'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
         'views/soft_delete_config_settings_views.xml',
@@ -47,3 +47,4 @@
     'auto_install': False,
     'uninstall_hook': 'uninstall_hook',
 }
+

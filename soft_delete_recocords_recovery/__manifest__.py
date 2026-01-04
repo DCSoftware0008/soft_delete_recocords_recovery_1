@@ -13,7 +13,11 @@
     'category': 'Tools',
     'author': 'DC Software',
     'website': 'https://github.com',
+<<<<<<< HEAD
     'license': 'LGPL-3',
+=======
+    'license': 'OPL-1',
+>>>>>>> 0998473e99539b32e12721d7f5e133a91d49cc2e
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
@@ -50,6 +54,9 @@
     'currency': 'USD',
 }
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 0998473e99539b32e12721d7f5e133a91d49cc2e

@@ -10,12 +10,12 @@
                     <div class="row mt16 o_settings_container">
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <field name="config_id" invisible="1"/>
+                                <!-- <field name="config_id" invisible="1"/> -->
                                 <label for="model_ids" string="Model Name" class="col-lg-3 o_light_label"/>
                                 <field name="model_ids" widget="many2many_tags" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
                                 <div class="text-muted">
                                     Select the models for which soft delete functionality should be enabled.
-                                <field name="config_id"/>
+                                <!-- <field name="config_id"/> -->
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <field name="config_id" invisible="1"/>
+                                <!-- <field name="config_id" invisible="1"/> -->
                                 <label for="select_all_permanent_delete" readonly="1" string="Select All for Permanent Delete" class="col-lg-3 o_light_label"/>
                                 <field name="select_all_permanent_delete" readonly="1"/>
                                 <div class="text-muted">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <field name="config_id" invisible="1"/>
+                                <!-- <field name="config_id" invisible="1"/> -->
                                 <label for="specific_models_recover" string="Recover Specific Models" class="col-lg-3 o_light_label"/>
                                 <field name="specific_models_recover" widget="many2many_tags" domain="[('id', 'in', model_ids)]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"/>
                                 <div class="text-muted">

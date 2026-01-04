@@ -91,7 +91,7 @@ export class SoftDeleteManagerKanbanController extends KanbanController {
 }
 
 // Register a custom Kanban view (same pattern as your list view)
-registry.category("views").add('soft_delete_manager_kanban', {
+registry.category("views").add('soft_delete_manager_kanban_view_with_button', {
     ...kanbanView,
     Controller: SoftDeleteManagerKanbanController,
     buttonTemplate: "soft_delete_manager.KanbanViewButtons",

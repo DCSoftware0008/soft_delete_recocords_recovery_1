@@ -1,7 +1,7 @@
 {
     'name': 'Soft Delete Manager',
     'version': '16.0.4.0.0',
-    'summary': 'Manage soft delete functionality for Odoo models',
+    'summary': '[V00001]Manage soft delete functionality for Odoo models',
     'description': '''
         This module allows administrators to configure soft delete functionality
         for selected Odoo models. Features include:
@@ -14,7 +14,6 @@
     'author': 'DC Software',
     'website': 'https://github.com',
     'license': 'LGPL-3',
-    'license': 'OPL-1',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
@@ -50,3 +49,7 @@
     'price': 49.99,
     'currency': 'USD',
 }
+
+
+
+

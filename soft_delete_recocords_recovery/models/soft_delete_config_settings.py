@@ -19,7 +19,7 @@ class SoftDeleteConfigSettings(models.TransientModel):
     # config_id = fields.Many2one(
     #     'soft.delete.manager.config',
     #     string="Configuration",
-    #     required=True,
+    #     # required=True,
     # )
 
     select_all_permanent_delete = fields.Boolean(
@@ -70,6 +70,14 @@ class SoftDeleteConfigSettings(models.TransientModel):
 
         self._ensure_is_deleted_field(model_ids)
 
+        # After _ensure_is_deleted_field(...)
+        IrModel = self.env['ir.model']
+        for model_rec in IrModel.browse(new_model_ids):
+            model_name = model_rec.model
+            if model_rec.transient:
+                continue  # wizards shouldn't be soft-deleted anyway
+            self._patch_unlink_method(model_name)
+
         # Apply view inheritances and js_class
         self._apply_view_inheritances_and_params(new_model_ids)
 
@@ -86,27 +94,48 @@ class SoftDeleteConfigSettings(models.TransientModel):
         return [int(x) for x in ids_str.split(',') if x.strip().isdigit()]
 
     def _patch_unlink_method(self, model_name):
+        """
+        Safely monkey-patch unlink method for soft delete
+        """
         try:
-            model_cls = self.env[model_name].__class__
-            if getattr(model_cls, '_soft_delete_patched', False):
+            # Get the actual model class from registry (most stable way)
+            ModelClass = self.env.registry[model_name]
+
+            # Already patched? Skip
+            if getattr(ModelClass, '_soft_delete_patched', False):
+                _logger.info(f"unlink already patched for {model_name}, skipping.")
                 return
 
-            original_unlink = model_cls.unlink
+            original_unlink = ModelClass.unlink
 
-            def patched_unlink(self):
-                for rec in self:
-                    if hasattr(rec, 'x_is_deleted'):
-                        rec.write({'x_is_deleted': True})
-                    else:
-                        original_unlink(rec)
-                return True
+            def patched_unlink(self, *args, **kwargs):
+                # self here is a recordset
+                if not self:
+                    return True
 
-            model_cls.unlink = patched_unlink
-            model_cls.unlink_original = original_unlink
-            model_cls._soft_delete_patched = True
-            _logger.info(f"Patched unlink for {model_name}")
+                # Only soft-delete if the field exists
+                if 'x_is_deleted' in self._fields:
+                    # We write on all records at once (more efficient)
+                    self.write({'x_is_deleted': True})
+                    _logger.info(f"Soft-deleted {len(self)} records in {model_name}")
+                else:
+                    # Fallback to hard delete if field missing (shouldn't happen)
+                    _logger.warning(f"x_is_deleted missing in {model_name} → hard delete")
+                    return original_unlink(self, *args, **kwargs)
+
+                return True  # Important: return True to mimic successful unlink
+
+            # Replace the method
+            ModelClass.unlink = patched_unlink
+            ModelClass.unlink_original = original_unlink  # optional, for permanent delete later
+            ModelClass._soft_delete_patched = True
+
+            _logger.info(f"Successfully patched unlink for {model_name}")
+
         except Exception as e:
-            _logger.error(f"Failed to patch unlink for {model_name}: {e}")
+            _logger.error(f"Failed to patch unlink for {model_name}: {str(e)}", exc_info=True)
+            # Optional: raise if you want to block saving config when patching fails
+            # raise
 
     # def set_values(self):
     #     super().set_values()
@@ -605,7 +634,7 @@ class SoftDeleteConfigSettings(models.TransientModel):
         for model in IrModel.browse(model_ids):
             action = IrActionsActWindow.search([
                 ('res_model', '=', model.model),
-                '|',
+                '|','|',
                 ('view_mode', 'ilike', 'tree'),
                 ('view_mode', 'ilike', 'form'),
                 ('view_mode', 'ilike', 'kanban'),
